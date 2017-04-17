@@ -1,0 +1,34 @@
+---
+
+# The path of the folder that will hold the new release.
+#typo3_cms_deployment_new_release_path:
+
+# The path of the folder that will hold the shared resources.
+#typo3_cms_deployment_shared_path:
+
+# The path to the Composer file.
+# By default, the value will be either:
+#   - set to the value of the variable "{{ composer_path }}" defined inside the "nicoherbigio.composer" role or
+#   - set to "composer" if the previous fact is not defined.
+typo3_cms_deployment_composer_path: "{{ composer_path | default('composer') }}"
+
+# The command that will be executed when running the Composer file.
+typo3_cms_deployment_composer_command: "install"
+
+typo3_cms_deployment_default_directories:
+  - { path: "{{ typo3_cms_deployment_new_release_path }}/web/typo3conf" }
+  - { path: "{{ typo3_cms_deployment_new_release_path }}/web/typo3temp" }
+  - { path: "{{ typo3_cms_deployment_shared_path }}/web/fileadmin" }
+  - { path: "{{ typo3_cms_deployment_shared_path }}/web/uploads" }
+
+typo3_cms_deployment_directories: []
+
+typo3_cms_deployment_default_templates: []
+
+typo3_cms_deployment_templates: []
+
+typo3_cms_deployment_default_symlinks:
+  - { src: "{{ typo3_cms_deployment_shared_path }}/web/fileadmin", dest: "{{ typo3_cms_deployment_new_release_path }}/web/fileadmin" }
+  - { src: "{{ typo3_cms_deployment_shared_path }}/web/uploads", dest: "{{ typo3_cms_deployment_new_release_path }}/web/uploads" }
+
+typo3_cms_deployment_symlinks: []

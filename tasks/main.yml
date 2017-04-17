@@ -1,0 +1,61 @@
+---
+
+- name: Create default and playbook definied directories if latter are configured.
+  file:
+    path: "{{ item.path }}"
+    state: directory
+    owner: "{{ item.user | default(omit) }}"
+    group: "{{ item.group | default(omit) }}"
+    mode: "{{ item.mode | default(omit) }}"
+  with_items:
+    - "{{ typo3_cms_deployment_default_directories }}"
+    - "{{ typo3_cms_deployment_directories }}"
+  when: item is defined
+
+- name: Create default and playbook definied files from templates if latter are configured.
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.user | default(omit) }}"
+    group: "{{ item.group | default(omit) }}"
+    mode: "{{ item.mode | default(omit) }}"
+  with_items:
+    - "{{ typo3_cms_deployment_default_templates }}"
+    - "{{ typo3_cms_deployment_templates }}"
+  when: item is defined
+
+- name: Create default and playbook definied symlinks to shared folders and files if latter are configured.
+  file:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    state: link
+    force: yes
+  with_items:
+    - "{{ typo3_cms_deployment_default_symlinks }}"
+    - "{{ typo3_cms_deployment_symlinks }}"
+  when: item is defined
+
+- name: Execute Composer to install PHP dependencies.
+  command: "{{ typo3_cms_deployment_composer_path }} {{typo3_cms_deployment_composer_command}} --working-dir {{ typo3_cms_deployment_new_release_path }} --quiet"
+
+- name: Change folder permissions of TYPO3 CMS root directory.
+  file:
+    path: "{{ typo3_cms_deployment_new_release_path }}/web"
+    state: directory
+    mode: g+w
+
+- name: Change file and folder permission of TYPO3 CMS directory.
+  file:
+    path: "{{ item.path }}"
+    state: directory
+    mode: g+w
+    recurse: yes
+  with_items:
+    - "{{ typo3_cms_deployment_default_directories }}"
+
+- name: Initialize TYPO3 CMS instance.
+  command: "{{ typo3_cms_deployment_new_release_path }}/bin/typo3cms {{item}}"
+  with_items:
+    - "install:fixfolderstructure"
+    - "language:update"
+    - "cache:flush"
