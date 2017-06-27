@@ -15,6 +15,9 @@ typo3_cms_deployment_composer_path: "{{ composer_path | default('composer') }}"
 # The command that will be executed when running the Composer file.
 typo3_cms_deployment_composer_command: "install"
 
+# The options that will be append to the executed command when running the Composer file.
+typo3_cms_deployment_composer_options: ""
+
 typo3_cms_deployment_default_directories:
   - { path: "{{ typo3_cms_deployment_new_release_path }}/web/typo3conf" }
   - { path: "{{ typo3_cms_deployment_new_release_path }}/web/typo3temp" }

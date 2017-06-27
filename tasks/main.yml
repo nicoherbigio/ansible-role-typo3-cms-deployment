@@ -36,7 +36,7 @@
   when: item is defined
 
 - name: Execute Composer to install PHP dependencies.
-  command: "{{ typo3_cms_deployment_composer_path }} {{typo3_cms_deployment_composer_command}} --working-dir {{ typo3_cms_deployment_new_release_path }} --quiet"
+  command: "{{ typo3_cms_deployment_composer_path }} {{typo3_cms_deployment_composer_command}} --no-ansi --no-interaction --no-progress --working-dir {{ typo3_cms_deployment_new_release_path }} {% if typo3_cms_deployment_composer_options != \"\" %}{{ typo3_cms_deployment_composer_options }}{% endif %}"
 
 - name: Change folder permissions of TYPO3 CMS root directory.
   file:
