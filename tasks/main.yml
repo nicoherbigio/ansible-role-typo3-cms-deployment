@@ -1,6 +1,6 @@
 ---
 
-- name: Create default and playbook definied directories if latter are configured.
+- name: Create default and playbook definied directories.
   file:
     path: "{{ item.path }}"
     state: directory
@@ -12,7 +12,7 @@
     - "{{ typo3_cms_deployment_directories }}"
   when: item is defined
 
-- name: Create default and playbook definied files from templates if latter are configured.
+- name: Create default and playbook definied files from templates.
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -24,7 +24,7 @@
     - "{{ typo3_cms_deployment_templates }}"
   when: item is defined
 
-- name: Create default and playbook definied symlinks to shared folders and files if latter are configured.
+- name: Create default and playbook definied symlinks to shared folders and files.
   file:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -52,10 +52,11 @@
     recurse: yes
   with_items:
     - "{{ typo3_cms_deployment_default_directories }}"
+  when: item is defined
 
-- name: Initialize TYPO3 CMS instance.
-  command: "{{ typo3_cms_deployment_new_release_path }}/bin/typo3cms {{ item }}"
+- name: Execute default and playbook defined TYPO3 CMS console commands to initialize TYPO3 CMS instance.
+  command: "{{ typo3_cms_deployment_console_path }} {{ item }}"
   with_items:
-    - "install:fixfolderstructure"
-    - "language:update"
-    - "cache:flush"
+    - "{{ typo3_cms_deployment_default_console_commands }}"
+    - "{{ typo3_cms_deployment_console_commands }}"
+  when: item is defined

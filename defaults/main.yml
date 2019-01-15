@@ -35,3 +35,13 @@ typo3_cms_deployment_default_symlinks:
   - { src: "{{ typo3_cms_deployment_shared_path }}/web/uploads", dest: "{{ typo3_cms_deployment_new_release_path }}/web/uploads" }
 
 typo3_cms_deployment_symlinks: []
+
+# The path to the TYPO3 CMS console file.
+typo3_cms_deployment_console_path: "{{ typo3_cms_deployment_new_release_path }}/bin/typo3cms"
+
+typo3_cms_deployment_default_console_commands:
+  - "install:fixfolderstructure"
+  - "language:update"
+  - "cache:flush"
+
+typo3_cms_deployment_console_commands: []
