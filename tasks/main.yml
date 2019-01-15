@@ -36,7 +36,7 @@
   when: item is defined
 
 - name: Execute Composer to install PHP dependencies.
-  command: "{{ typo3_cms_deployment_composer_path }} {{typo3_cms_deployment_composer_command}} --no-ansi --no-interaction --no-progress --working-dir {{ typo3_cms_deployment_new_release_path }} {% if typo3_cms_deployment_composer_options != \"\" %}{{ typo3_cms_deployment_composer_options }}{% endif %}"
+  command: "{{ typo3_cms_deployment_composer_path }} {{ typo3_cms_deployment_composer_command }} --no-ansi --no-interaction --no-progress --working-dir {{ typo3_cms_deployment_new_release_path }} {% if typo3_cms_deployment_composer_options != \"\" %}{{ typo3_cms_deployment_composer_options }}{% endif %}"
 
 - name: Change folder permissions of TYPO3 CMS root directory.
   file:
@@ -54,7 +54,7 @@
     - "{{ typo3_cms_deployment_default_directories }}"
 
 - name: Initialize TYPO3 CMS instance.
-  command: "{{ typo3_cms_deployment_new_release_path }}/bin/typo3cms {{item}}"
+  command: "{{ typo3_cms_deployment_new_release_path }}/bin/typo3cms {{ item }}"
   with_items:
     - "install:fixfolderstructure"
     - "language:update"
